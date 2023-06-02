@@ -17,3 +17,11 @@
       
   - name: Start project
     shell: '. /home/ubuntu/venv/bin/activate; django-admin startproject setup /home/ubuntu'
+
+  - name: Include hosts in settings
+    lineinfile:
+      path: /home/ubuntu/setup/settings.py
+      regexp: 'ALLOWED_HOSTS'
+      line: 'ALLOWED_HOSTS = ["*"]'
+      backrefs: yes
+
