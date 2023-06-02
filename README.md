@@ -6,7 +6,6 @@
 
 
 ## Terraform
----
 > Used to deploy the infrastructure.
 
 ### Initialize the configuration directory
@@ -36,7 +35,6 @@ terraform validate
     ```
 
 ## Ansible
----
 > Used to manage configurations and install programs.
 
 1. Run
