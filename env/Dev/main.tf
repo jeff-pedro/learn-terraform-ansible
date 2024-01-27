@@ -1,9 +1,10 @@
 module "aws-dev" {
-  source = "../../infra"
-  instancia = "t2.micro"
-  aws_image = "ami-053b0d53c279acc90"
-  regiao_aws = "us-east-1"
-  chave = "IaC-DEV"
+  source       = "../../infra"
+  aws_instance = "t2.micro"
+  aws_image    = "ami-053b0d53c279acc90"
+  aws_region   = "us-east-1"
+  aws_tag_name = "Project DEV"
+  key          = "IaC-DEV"
 }
 
 output "IP" {

@@ -1,9 +1,10 @@
 module "aws-prod" {
-  source = "../../infra"
-  instancia = "t2.micro"
-  aws_image = "ami-008fe2fc65df48dac"
-  regiao_aws = "us-west-2"
-  chave = "IaC-Prod"
+  source       = "../../infra"
+  aws_instance = "t2.micro"
+  aws_image    = "ami-053b0d53c279acc90"
+  aws_region   = "us-east-1"
+  aws_tag_name = "Project Prod"
+  key          = "IaC-Prod"
 }
 
 output "IP" {

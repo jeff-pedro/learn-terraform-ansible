@@ -1,15 +1,19 @@
-variable "regiao_aws" {
+variable "aws_region" {
   type = string
 }
 
-variable "chave" {
+variable "key" {
   type = string
 }
 
-variable "instancia" {
+variable "aws_instance" {
   type = string
 }
 
 variable "aws_image" {
+  type = string
+}
+
+variable "aws_tag_name" {
   type = string
 }
