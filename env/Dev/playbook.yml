@@ -14,10 +14,15 @@
       name:
         - django
         - djangorestframework
-      
+
+  - name: Check if project exists
+    stat:
+      path: /home/ubuntu/setup/settings.py
+    register: project
+
   - name: Start project
     shell: '. /home/ubuntu/venv/bin/activate; django-admin startproject setup /home/ubuntu'
-    ignore_errors: yes
+    when: not project.stat.exists
 
   - name: Include hosts in settings
     lineinfile:
