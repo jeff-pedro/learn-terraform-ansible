@@ -9,3 +9,5 @@
 
 # secret keys
 *.pem
+IaC-DEV*
+IaC-Prod*

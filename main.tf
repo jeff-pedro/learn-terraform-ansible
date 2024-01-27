@@ -16,9 +16,14 @@ provider "aws" {
 resource "aws_instance" "app_server" {
   ami           = "ami-053b0d53c279acc90"
   instance_type = "t2.micro"
-  key_name      = "terraform"
-
+  key_name      = "IaC-DEV"
+  
   tags = {
     Name = "Terraform Ansible Python"
   }
+}
+
+resource "aws_key_pair" "awsChave" {
+  key_name = "IaC-DEV"
+  public_key = file("IaC-DEV.pub")
 }
