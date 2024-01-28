@@ -1,4 +1,4 @@
-- hosts: terraform-ansible
+- hosts: prod
   tasks:
     - name: Install python and virtualenv
       apt:
@@ -15,18 +15,16 @@
           - django
           - djangorestframework
 
-    - name: Check if project exists
-      stat:
-        path: /home/ubuntu/setup/settings.py
-      register: project
-
-    - name: Start project
-      shell: ". /home/ubuntu/venv/bin/activate; django-admin startproject setup /home/ubuntu"
-      when: not project.stat.exists
-
+    - name: Git clone
+      ansible.builtin.git:
+        repo: https://github.com/alura-cursos/clientes-leo-api.git
+        dest: /home/ubuntu/api
+        version: master
+        force: true
+    
     - name: Include hosts in settings
       lineinfile:
-        path: /home/ubuntu/setup/settings.py
+        path: /home/ubuntu/api/setup/settings.py
         regexp: "ALLOWED_HOSTS"
         line: 'ALLOWED_HOSTS = ["*"]'
         backrefs: yes

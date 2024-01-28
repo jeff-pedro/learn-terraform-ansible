@@ -17,3 +17,7 @@ variable "aws_image" {
 variable "aws_tag_name" {
   type = string
 }
+
+variable "aws_security_group" {
+  type = string
+}

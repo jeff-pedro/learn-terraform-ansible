@@ -1,4 +1,4 @@
-- hosts: terraform-ansible
+- hosts: dev
   tasks:
     - name: Install python and virtualenv
       apt:
