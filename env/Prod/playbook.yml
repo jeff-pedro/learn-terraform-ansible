@@ -26,3 +26,9 @@
         regexp: "ALLOWED_HOSTS"
         line: 'ALLOWED_HOSTS = ["*"]'
         backrefs: yes
+
+    - name: Setup database
+      shell: '. /home/ubuntu/api/venv/bin/activate; python /home/ubuntu/api/manage.py migrate'
+
+    - name: Load initinal data
+      shell: '. /home/ubuntu/api/venv/bin/activate; python /home/ubuntu/api/manage.py loaddata clientes.json'
