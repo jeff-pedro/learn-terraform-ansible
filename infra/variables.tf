@@ -21,3 +21,15 @@ variable "aws_tag_name" {
 variable "aws_security_group" {
   type = string
 }
+
+variable "aws_group" {
+  type = string
+}
+
+variable "aws_min" {
+  type = number
+}
+
+variable "aws_max" {
+  type = number
+}

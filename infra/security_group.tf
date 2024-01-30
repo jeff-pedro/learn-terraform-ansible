@@ -15,6 +15,6 @@ resource "aws_security_group" "general_access" {
     protocol         = "-1"
   }
   tags = {
-    Name = var.aws_security_group
+    Name = "general_access"
   }
 }

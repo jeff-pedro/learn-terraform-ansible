@@ -5,6 +5,9 @@ module "aws-prod" {
   aws_region         = "us-east-1"
   aws_tag_name       = "Project Prod"
   aws_security_group = "Production"
+  aws_group          = "Prod"
+  aws_min            = 1
+  aws_max            = 10
   key                = "IaC-Prod"
 }
 

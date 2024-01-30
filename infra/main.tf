@@ -28,7 +28,18 @@ resource "aws_launch_template" "machine" {
   }
 }
 
-resource "aws_instance" "template_instance" {
+# resource "aws_instance" "template_instance" {
+#   launch_template {
+#     id      = aws_launch_template.machine.id
+#     version = "$Latest"
+#   }
+# }
+
+resource "aws_autoscaling_group" "group" {
+  availability_zones = [ "${var.aws_region}a" ]
+  name               = var.aws_group
+  min_size           = var.aws_min
+  max_size           = var.aws_max
   launch_template {
     id      = aws_launch_template.machine.id
     version = "$Latest"

@@ -5,6 +5,9 @@ module "aws-dev" {
   aws_region         = "us-east-1"
   aws_tag_name       = "Project DEV"
   aws_security_group = "DEV"
+  aws_group          = "DEV"
+  aws_min            = 0
+  aws_max            = 1
   key                = "IaC-DEV"
 }
 
