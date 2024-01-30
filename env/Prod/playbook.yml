@@ -1,5 +1,12 @@
 - hosts: prod
+  vars:
+    app_path: /home/ubuntu/api
+
   tasks:
+    # - name: debug
+    #   debug:
+    #     msg: "{{app_path}}/test"
+
     - name: Install python and virtualenv
       apt:
         pkg:
@@ -11,24 +18,27 @@
     - name: Git clone
       ansible.builtin.git:
         repo: https://github.com/alura-cursos/clientes-leo-api.git
-        dest: /home/ubuntu/api
+        dest: { app_path }
         version: master
         force: true
 
     - name: Install dependencies with pip (Django and Django Rest)
       pip:
-        virtualenv: /home/ubuntu/api/venv
-        requirements: /home/ubuntu/api/requirements.txt
+        virtualenv: "{{app_path}}/venv"
+        requirements: "{{app_path}}/requirements.txt"
 
     - name: Include hosts in settings
       lineinfile:
-        path: /home/ubuntu/api/setup/settings.py
+        path: "{{app_path}}/setup/settings.py"
         regexp: "ALLOWED_HOSTS"
         line: 'ALLOWED_HOSTS = ["*"]'
         backrefs: yes
 
     - name: Setup database
-      shell: '. /home/ubuntu/api/venv/bin/activate; python /home/ubuntu/api/manage.py migrate'
+      shell: ". {{app_path}}/venv/bin/activate; python {{app_path}}/manage.py migrate"
 
     - name: Load initinal data
-      shell: '. /home/ubuntu/api/venv/bin/activate; python /home/ubuntu/api/manage.py loaddata clientes.json'
+      shell: ". {{app_path}}/venv/bin/activate; python {{app_path}}/manage.py loaddata clientes.json"
+
+    - name: Start server
+      shell: ". {{app_path}}/venv/bin/activate; nohup python {{app_path}}/manage.py runserver 0.0.0.0:8000 &"

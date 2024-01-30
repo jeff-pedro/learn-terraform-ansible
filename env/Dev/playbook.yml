@@ -1,4 +1,7 @@
 - hosts: dev
+  vars:
+    app_path: /home/ubuntu/api
+
   tasks:
     - name: Install python and virtualenv
       apt:
@@ -10,23 +13,23 @@
 
     - name: Install dependencies with pip (Django and Django Rest)
       pip:
-        virtualenv: /home/ubuntu/venv
+        virtualenv: "{{app_path}}/venv"
         name:
           - django
           - djangorestframework
 
     - name: Check if project exists
       stat:
-        path: /home/ubuntu/setup/settings.py
+        path: "{{app_path}}/setup/settings.py"
       register: project
 
     - name: Start project
-      shell: ". /home/ubuntu/venv/bin/activate; django-admin startproject setup /home/ubuntu"
+      shell: ". {{app_path}}/venv/bin/activate; django-admin startproject setup {{app_path}}"
       when: not project.stat.exists
 
     - name: Include hosts in settings
       lineinfile:
-        path: /home/ubuntu/setup/settings.py
+        path: "{{app_path}}/setup/settings.py"
         regexp: "ALLOWED_HOSTS"
         line: 'ALLOWED_HOSTS = ["*"]'
         backrefs: yes
