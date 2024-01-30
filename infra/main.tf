@@ -19,10 +19,13 @@ resource "aws_launch_template" "machine" {
   key_name             = var.key
   security_group_names = [var.aws_security_group]
 
-  tags = {
-    Name = var.aws_tag_name
-  }
+  tag_specifications {
+    resource_type = "instance"
 
+    tags = {
+      Name = var.aws_tag_name
+    }
+  }
 }
 
 resource "aws_instance" "template_instance" {
