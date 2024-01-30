@@ -8,6 +8,6 @@ module "aws-prod" {
   key                = "IaC-Prod"
 }
 
-output "IP" {
-  value = module.aws-prod.public_IP
-}
+# output "IP" {
+#   value = module.aws-prod.public_IP
+# }

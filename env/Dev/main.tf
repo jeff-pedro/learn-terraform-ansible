@@ -8,6 +8,6 @@ module "aws-dev" {
   key                = "IaC-DEV"
 }
 
-output "IP" {
-  value = module.aws-dev.public_IP
-}
+# output "IP" {
+#   value = module.aws-dev.public_IP
+# }
