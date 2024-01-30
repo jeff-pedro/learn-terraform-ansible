@@ -4,7 +4,7 @@ module "aws-dev" {
   aws_image          = "ami-053b0d53c279acc90"
   aws_region         = "us-east-1"
   aws_tag_name       = "Project DEV"
-  aws_security_group = "dev_general_access"
+  aws_security_group = "DEV"
   key                = "IaC-DEV"
 }
 

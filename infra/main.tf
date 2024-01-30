@@ -17,6 +17,7 @@ resource "aws_launch_template" "machine" {
   image_id      = var.aws_image
   instance_type = var.aws_instance
   key_name      = var.key
+  security_group_names = [ var.aws_security_group ]
 
   tags = {
     Name = var.aws_tag_name
