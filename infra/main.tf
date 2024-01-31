@@ -27,13 +27,6 @@ resource "aws_launch_template" "machine" {
   }
 }
 
-# resource "aws_instance" "template_instance" {
-#   launch_template {
-#     id      = aws_launch_template.machine.id
-#     version = "$Latest"
-#   }
-# }
-
 resource "aws_key_pair" "keyPair" {
   key_name   = var.key
   public_key = file("${var.key}.pub")
@@ -42,13 +35,13 @@ resource "aws_key_pair" "keyPair" {
 resource "aws_autoscaling_group" "group" {
   availability_zones = ["${var.aws_region}a", "${var.aws_region}b"]
   name               = var.aws_groupName
-  min_size           = var.aws_min
   max_size           = var.aws_max
+  min_size           = var.aws_min
+  target_group_arns  = [aws_lb_target_group.loadBalancerTarget.arn]
   launch_template {
     id      = aws_launch_template.machine.id
     version = "$Latest"
   }
-  target_group_arns = [aws_lb_target_group.loadBalancerTarget.arn]
 }
 
 resource "aws_default_subnet" "subnet_1" {
@@ -67,25 +60,23 @@ resource "aws_lb" "loadBalancer" {
   ]
 }
 
+resource "aws_default_vpc" "vpc" {
+}
+
 resource "aws_lb_target_group" "loadBalancerTarget" {
   name     = "targetMachines"
   port     = "8000"
   protocol = "HTTP"
-  vpc_id   = aws_default_vpc.default.id
+  vpc_id   = aws_default_vpc.vpc.id
 }
+
 
 resource "aws_lb_listener" "inputLoadBalancer" {
   load_balancer_arn = aws_lb.loadBalancer.arn
   port              = "8000"
   protocol          = "HTTP"
   default_action {
-    type             = "forward"
+    type = "forward"
     target_group_arn = aws_lb_target_group.loadBalancerTarget.arn
   }
 }
-
-resource "aws_default_vpc" "default" {}
-
-# output "public_IP" {
-#   value = template_instance.machine.public_ip
-# }
