@@ -20,7 +20,7 @@ tee -a playbook.yml > /dev/null <<EOT
     - name: Git clone
       ansible.builtin.git:
         repo: https://github.com/alura-cursos/clientes-leo-api.git
-        dest: { app_path }
+        dest: "{{ app_path }}"
         version: master
         force: true
 
