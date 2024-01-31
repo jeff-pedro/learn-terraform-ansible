@@ -11,3 +11,6 @@
 *.pem
 IaC-DEV*
 IaC-Prod*
+
+__pycache__/
+.vscode/
