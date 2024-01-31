@@ -22,7 +22,7 @@ variable "aws_security_group" {
   type = string
 }
 
-variable "aws_group" {
+variable "aws_groupName" {
   type = string
 }
 
