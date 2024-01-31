@@ -58,6 +58,7 @@ resource "aws_lb" "loadBalancer" {
     aws_default_subnet.subnet_1.id,
     aws_default_subnet.subnet_2.id
   ]
+  security_groups = [ aws_security_group.general_access.id ]
 }
 
 resource "aws_default_vpc" "vpc" {
@@ -76,7 +77,19 @@ resource "aws_lb_listener" "inputLoadBalancer" {
   port              = "8000"
   protocol          = "HTTP"
   default_action {
-    type = "forward"
+    type             = "forward"
     target_group_arn = aws_lb_target_group.loadBalancerTarget.arn
+  }
+}
+
+resource "aws_autoscaling_policy" "scalingProduction" {
+  name                   = "terraformScaling"
+  autoscaling_group_name = var.aws_groupName
+  policy_type            = "TargetTrackingScaling"
+  target_tracking_configuration {
+    predefined_metric_specification {
+      predefined_metric_type = "ASGAverageCPUUtilization"
+    }
+    target_value = 50.0
   }
 }
