@@ -68,7 +68,7 @@ resource "aws_lb" "loadBalancer" {
 }
 
 resource "aws_lb_target_group" "loadBalancerTarget" {
-  name     = "target_machines"
+  name     = "targetMachines"
   port     = "8000"
   protocol = "HTTP"
   vpc_id   = aws_default_vpc.default.id
