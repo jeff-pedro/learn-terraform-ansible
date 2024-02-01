@@ -9,8 +9,5 @@ module "aws-dev" {
   aws_min            = 0
   aws_max            = 1
   key                = "IaC-DEV"
+  production         = false
 }
-
-# output "IP" {
-#   value = module.aws-dev.public_IP
-# }

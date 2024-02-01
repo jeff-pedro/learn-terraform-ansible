@@ -18,7 +18,7 @@ resource "aws_launch_template" "machine" {
   instance_type        = var.aws_instance
   key_name             = var.key
   security_group_names = [var.aws_security_group]
-  user_data            = filebase64("ansible.sh")
+  user_data            = var.production ? filebase64("ansible.sh") : ""
   tag_specifications {
     resource_type = "instance"
     tags = {
@@ -27,7 +27,7 @@ resource "aws_launch_template" "machine" {
   }
 }
 
-resource "aws_key_pair" "keyPair" {
+resource "aws_key_pair" "sshKey" {
   key_name   = var.key
   public_key = file("${var.key}.pub")
 }
@@ -37,7 +37,7 @@ resource "aws_autoscaling_group" "group" {
   name               = var.aws_groupName
   max_size           = var.aws_max
   min_size           = var.aws_min
-  target_group_arns  = [aws_lb_target_group.loadBalancerTarget.arn]
+  target_group_arns  = var.production ? [aws_lb_target_group.loadBalancerTarget[0].arn] : []
   launch_template {
     id      = aws_launch_template.machine.id
     version = "$Latest"
@@ -59,6 +59,7 @@ resource "aws_lb" "loadBalancer" {
     aws_default_subnet.subnet_2.id
   ]
   security_groups = [ aws_security_group.general_access.id ]
+  count = var.production ? 1 : 0
 }
 
 resource "aws_default_vpc" "vpc" {
@@ -69,17 +70,19 @@ resource "aws_lb_target_group" "loadBalancerTarget" {
   port     = "8000"
   protocol = "HTTP"
   vpc_id   = aws_default_vpc.vpc.id
+  count = var.production ? 1 : 0
 }
 
 
 resource "aws_lb_listener" "inputLoadBalancer" {
-  load_balancer_arn = aws_lb.loadBalancer.arn
+  load_balancer_arn = aws_lb.loadBalancer[0].arn
   port              = "8000"
   protocol          = "HTTP"
   default_action {
     type             = "forward"
-    target_group_arn = aws_lb_target_group.loadBalancerTarget.arn
+    target_group_arn = aws_lb_target_group.loadBalancerTarget[0].arn
   }
+  count = var.production ? 1 : 0
 }
 
 resource "aws_autoscaling_policy" "scalingProduction" {
@@ -92,4 +95,5 @@ resource "aws_autoscaling_policy" "scalingProduction" {
     }
     target_value = 50.0
   }
+  count = var.production ? 1 : 0
 }

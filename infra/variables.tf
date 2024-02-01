@@ -33,3 +33,7 @@ variable "aws_min" {
 variable "aws_max" {
   type = number
 }
+
+variable "production" {
+  type = bool
+}

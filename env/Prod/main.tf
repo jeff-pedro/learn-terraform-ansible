@@ -9,8 +9,5 @@ module "aws-prod" {
   aws_min            = 1
   aws_max            = 10
   key                = "IaC-Prod"
+  production         = true
 }
-
-# output "IP" {
-#   value = module.aws-prod.public_IP
-# }
